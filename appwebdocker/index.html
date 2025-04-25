@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reloj Digital</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #00ffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .clock {
+            font-size: 5rem;
+            letter-spacing: 2px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="clock" id="clock" aria-label="Hora actual">Cargando...</div>
+
+    <script>
+        async function fetchTime() {
+            try {
+                const response = await fetch('reloj.php');
+                const time = await response.text();
+                document.getElementById('clock').textContent = time.trim();
+            } catch (error) {
+                console.error('Error al obtener la hora:', error);
+                document.getElementById('clock').textContent = 'Error 😞';
+            }
+        }
+
+        // Llama inmediatamente para mostrar la hora inicial
+        fetchTime();
+
+        // Actualiza cada segundo
+        setInterval(fetchTime, 1000);
+    </script>
+</body>
+</html>
